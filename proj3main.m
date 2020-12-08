@@ -89,12 +89,25 @@ solution = diff > SBS_Lambda;
 
 end
 
-function solution = AdaptiveBackgroundSubstraction(Background, next_frame, ABS_Lambda)
+function [absImage, Bt] = AdaptiveBackgroundSubstraction(Background, next_frame, ABS_Lambda)
+    % from repo
+    % parameters: BtSub1, grayscaleImage, alpha_parameter, abs_diff_threshold
+    % code
+    diff = abs(BtSub1 - grayscaleImage);
+    absImage = diff > abs_diff_threshold;
+    Bt = (alpha_parameter * grayscaleImage) + ((1 - alpha_parameter) * BtSub1);
 solution = 1;
 end
 
-function solution = PersistentFrameDifferencing(Background, next_frame, PFD_Lambda)
-solution = 1;
+function [pfdImage, Ht] = PersistentFrameDifferencing(Background, next_frame, PFD_Lambda)
+    % from repo
+    % parameters: BtSub1, HtSub1, grayscaleImage, abs_diff_threshold, gamma_parameter
+    % code
+    diff = abs(BtSub1 - grayscaleImage);
+    Mt = diff > abs_diff_threshold;
+    tmp = max(HtSub1-gamma_parameter, 0);
+    Ht = max(255*Mt, tmp);
+    pfdImage = Ht / 255;
 end
 
 
